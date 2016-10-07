@@ -28,16 +28,13 @@ var pluckFirstLineFromFileAsync = function(filePath) {
 var getStatusCodeAsync = function(url) {
   // TODO
   return new Promise((resolve, reject) => {
-    $.ajax({
-      url: url,
-      // data: data,
-      done: function(data) {
-        resolve(data);
-      },
-      error: function(error) {
-        reject(error);
+    request(url, function(err,data){
+      if(err){
+        reject(err)
+      } else{
+        resolve(data.statusCode)
       }
-    });
+    })
   });
 };
 

@@ -9,29 +9,25 @@ var crypto = require('crypto');
 var Promise = require('bluebird');
 
 // (1) Asyncronous HTTP request
-var getGitHubProfile = function(user, callback) {
-  var options = {
-    url: 'https://api.github.com/users/' + user,
-    headers: { 'User-Agent': 'request' },
-    json: true  // will JSON.parse(body) for us
-  };
+var getGitHubProfileAsync = function(user, callback) {
 
-  request.get(options, function(err, res, body) {
-    if (err) {
-      callback(err, null);
-    } else if (body.message) {
-      callback(new Error('Failed to get GitHub profile: ' + body.message), null);
-    } else {
-      callback(null, body);
-    }
-  });
+  return new Promise((resolve, reject) => {
+    request(user, (err, data) =>{
+      
+    })
+  })
 };
 
 var getGitHubProfileAsync; // TODO
 
+// if (err) {
+//         reject(err, null);
+//       } else {
+//         resolve (null, data);
+//       }
 
 // (2) Asyncronous token generation
-var generateRandomToken = function(callback) {
+var generateRandomTokenAsync = function(callback) {
   crypto.randomBytes(20, function(err, buffer) {
     if (err) { return callback(err, null); }
     callback(null, buffer.toString('hex'));
@@ -42,7 +38,7 @@ var generateRandomTokenAsync; // TODO
 
 
 // (3) Asyncronous file manipulation
-var readFileAndMakeItFunny = function(filePath, callback) {
+var readFileAndMakeItFunnyAsync = function(filePath, callback) {
   fs.readFile(filePath, 'utf8', function(err, file) {
     if (err) { return callback(err); }
    

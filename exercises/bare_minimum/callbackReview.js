@@ -1,10 +1,16 @@
 /**
  * Implement these functions following the node style callback pattern
  */
-var XMLHttpRequest = require('xmlhttprequest').XMLHttpRequest;
+
+
+
+
+
+
 var fs = require('fs');
 var request = require('request');
-var xhr = new XMLHttpRequest();
+var http = require('http');
+var url = require('url')
 // This function should retrieve the first line of the file at `filePath`
 var pluckFirstLineFromFile = function (filePath, cb) {
   // TODO
@@ -20,40 +26,14 @@ var pluckFirstLineFromFile = function (filePath, cb) {
 
 // This function should retrieve the status code of a GET request to `url`
 var getStatusCode = function (url, callback) {
-  
-  console.log('UNSENT', xhr.status);
-
-  xhr.open('GET', url, true);
-  console.log('OPENED', xhr.status);
-  // xhr.onreadystatechange = function(event) {
-  //   // console.log(xhr.responseText, xhr.response);
-  //   if (xhr.status === 200) {
-  //     callback(xhr.statusText, xhr.responseText);
-  //   } else {
-  //     callback(xhr.statusText);
-  //   }
-  // };
-  xhr.onload = function () {
-    if (xhr.status === 200) {
-      console.log('hello 200', xhr.status);
-      callback(undefined, xhr.status);
-      return;
-    } 
-  };
-  xhr.onerror = function() {
-    var err = {};
-    err.message = 'Invalid URI';
-    callback(err);
-  };
-  // if (xhr.status !== 200) {
-  //   console.log('failed',xhr.status)
-  //   callback(err);
-  // }
-  xhr.setRequestHeader('Content-type', 'text/html');
-  xhr.send();
-
-  // TODO
-};
+  request(url, (err, res) => {
+    if(err){
+      callback(err)
+    } else{
+      callback(null, res)
+    }
+  })
+}
 
 // Export these functions so we can test them and reuse them in later exercises
 module.exports = {

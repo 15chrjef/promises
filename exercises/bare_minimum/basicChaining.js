@@ -7,14 +7,24 @@
  *
  * HINT: We exported some similar promise-returning functions in previous exercises
  */
-
+var request = require('request');
 var fs = require('fs');
 var Promise = require('bluebird');
 
 
 
 var fetchProfileAndWriteToFile = function(readFilePath, writeFilePath) {
-  // TODO
+ fs.readFile(__dirname + readFilePath, function(err,data){
+  console.log(data)
+ }).then( request('https://api.github.com', function(err,data){
+  if(err){
+    console.log(err)
+  } else{
+    console.log(data)
+  }
+ })).catch( console.log('err'))
+    .finally()
+
 };
 
 // Export these functions so we can test them
