@@ -13,7 +13,7 @@
  * you just have to wire everything up together! Once you pass this one, you'll
  * be a promise chaining master! Have fun!
  */
-
+require('dotenv').config();
 var Promise = require('bluebird');
 var lib = require('../../lib/advancedChainingLib.js');
 
@@ -21,9 +21,16 @@ var lib = require('../../lib/advancedChainingLib.js');
 // Visit the following url to sign up for a free account
 //     https://developer.clarifai.com/accounts/login/?next=/applications/
 // Then, create a new Application and pass your Client Id and Client Secret into the method below
-lib.setImageTaggerCredentials('YOUR_CLIENT_ID', 'YOUR_CLIENT_SECRET')
+lib.setImageTaggerCredentials(process.env.YOUR_CLIENT_ID, process.env.YOUR_CLIENT_SECRET);
 
 var searchCommonTagsFromGitHubProfiles = function(githubHandles) {
+  var profiles = [];
+  githubHandles.forEach((handle) => {
+    lib.getGitHubProfile(handle)
+    .then((data) => data)
+    console.log('profile', profile)
+    profiles.push(profile);
+  });
 };
 
 // Export these functions so we can unit test them
