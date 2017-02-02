@@ -66,7 +66,7 @@ describe('Callback review', function() {
       });
     });
 
-    xit('should invoke the callback with the status code as the second argument', function(done) {
+    it('should invoke the callback with the status code as the second argument', function(done) {
       google.get('/').reply(200);
 
       getStatusCode('https://google.com', function(err, statusCode) {
