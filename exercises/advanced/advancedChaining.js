@@ -25,11 +25,32 @@ lib.setImageTaggerCredentials(process.env.YOUR_CLIENT_ID, process.env.YOUR_CLIEN
 
 var searchCommonTagsFromGitHubProfiles = function(githubHandles) {
   var profiles = [];
-  githubHandles.forEach((handle) => {
-    lib.getGitHubProfile(handle)
-    .then((data) => data)
-    console.log('profile', profile)
-    profiles.push(profile);
+  var counter = 0;
+  return new Promise.all(githubHandles)
+  .then(handles => {
+    return new Promise((resolve, reject) => {
+      for (var i = 0 ; i < handles.length; i++) {
+        var handle = handles[i];
+        lib.getGitHubProfile(handle)
+        .then((data) => { 
+          profiles.push(data.avatarUrl);
+          counter++;
+          if (counter === handles.length) {
+            resolve(profiles);
+          } 
+        })
+        .catch(err => console.log('errrrrrrrrrrrrrr', err));
+      }
+    });
+  })  
+  .then(urls => {
+    return lib.authenticateImageTagger()
+    .then(token => {
+      return lib.tagImage(urls, token);
+    });
+  })
+  .then(tags => {
+    return lib.getIntersection(tags);
   });
 };
 
