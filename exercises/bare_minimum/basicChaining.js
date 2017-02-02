@@ -10,21 +10,52 @@
 var request = require('request');
 var fs = require('fs');
 var Promise = require('bluebird');
+var request = require('request');
 
 
 
 var fetchProfileAndWriteToFile = function(readFilePath, writeFilePath) {
- fs.readFile(__dirname + readFilePath, function(err,data){
-  console.log(data)
- }).then( request('https://api.github.com', function(err,data){
-  if(err){
-    console.log(err)
-  } else{
-    console.log(data)
-  }
- })).catch( console.log('err'))
-    .finally()
-
+  return new Promise((resolve, reject) => {
+    fs.readFile(readFilePath, 'utf-8', (err, data) => {
+      if (err) {
+        reject(err);
+      } else {
+        var gitHubName = data.slice(0, data.indexOf('\n'));
+        resolve(gitHubName)
+      }
+    });
+  })
+  .then((name) => {
+    var options = {
+      url: 'https://api.github.com/users/' + name,
+      headers: { 'User-Agent': 'request' },
+      json: true
+    };
+    var promise = new Promise((resolve, reject) => {
+      request.get(options, function(err, res, body) {
+        if (err) {
+          reject(err);
+        } else if (body.message) {
+          reject(body.message);
+        } else {
+          resolve(JSON.stringify(body));
+        }
+      });
+    });
+    return promise;
+  })
+  .then(body => {
+    return new Promise((resolve, reject) => {
+      fs.writeFile(writeFilePath, body, 'utf-8', function(err, data) {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(data);
+        }
+      })
+    })
+  })
+  .catch(err => err);
 };
 
 // Export these functions so we can test them
