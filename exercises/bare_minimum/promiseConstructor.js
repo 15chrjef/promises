@@ -29,7 +29,7 @@ var getStatusCodeAsync = function(url) {
       if (err) {
         reject(err);
       } else {
-        resolve(data.statusCode)
+        resolve(data.statusCode);
       }
     });
   });

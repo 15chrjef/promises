@@ -21,7 +21,7 @@ var fetchProfileAndWriteToFile = function(readFilePath, writeFilePath) {
         reject(err);
       } else {
         var gitHubName = data.slice(0, data.indexOf('\n'));
-        resolve(gitHubName)
+        resolve(gitHubName);
       }
     });
   })
@@ -52,8 +52,8 @@ var fetchProfileAndWriteToFile = function(readFilePath, writeFilePath) {
         } else {
           resolve(data);
         }
-      })
-    })
+      });
+    });
   })
   .catch(err => err);
 };
