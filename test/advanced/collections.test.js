@@ -7,7 +7,7 @@ var Promise = require('bluebird');
 // refactor the tests to use mocks, following previous
 // `nock` utilizing tests
 
-describe('Collections', function() {
+xdescribe('Collections', function() {
   var collections = require('../../exercises/advanced/collections.js');
 
   describe('combineFirstLineOfManyFiles', function() {

@@ -15,9 +15,27 @@ var Promise = require('bluebird');
  */
 
 var promisify = function(nodeStyleFn) {
- // TODO
+  var original = nodeStyleFn;
+  var nodeStyleFn = function() {
+    return new Promise((resolve, reject) => {
+      return original.call(this, ...arguments, (err, data) => {
+        if(err) { 
+          reject(err)
+        } else {
+          resolve(data)
+        }
+      })
+    })
+  }
+  return nodeStyleFn;
 };
 
+// var original = callback;
+// callback = function() {
+//     // Do something with arguments:
+//     console.log(arguments);
+//     return original.apply(this, arguments);
+// };
 
 /**
  * Given an array which contains promises, return a promise that is
@@ -31,7 +49,21 @@ var promisify = function(nodeStyleFn) {
  */
 
 var all = function(arrayOfPromises) {
-  // TODO
+  var arr = [];
+  var counter = 0;
+  return new Promise((resolve, reject) => {
+    arrayOfPromises.forEach((promise, i) => {
+      promise
+      .then(data => {
+        arr[i] = data;
+        counter ++;
+        if (counter === arrayOfPromises.length) {
+          resolve(arr);
+        }
+      })
+      .catch(err => reject(err));
+    });
+  })
 };
 
 
@@ -43,6 +75,24 @@ var all = function(arrayOfPromises) {
 
 var race = function(arrayOfPromises) {
   // TODO
+  var complete = false;
+  return new Promise((resolve, reject) => {
+    arrayOfPromises.forEach(promise => {
+      promise
+      .then(data => {
+        if (!complete){
+          complete = !complete;
+          resolve(data);
+        }
+      })
+      .catch(err => {
+        if (!complete) {
+          complete = !complete;
+          reject(err);
+        }
+      })
+    });
+  });
 };
 
 // Export these functions so we can unit test them

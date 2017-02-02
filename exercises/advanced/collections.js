@@ -19,12 +19,12 @@ var combineFirstLineOfManyFiles = function(filePaths, writePath) {
     paths.forEach( (path, i) => {
       fs.readFile(path, 'utf-8', (err, data) => {
         if (data) {
-          var firstLine = data.slice(0, data.indexOf('\n'))
+          var firstLine = data.slice(0, data.indexOf('\n'));
           files[i] = firstLine;
-          counter++
+          counter++;
         }
         if (counter === filePaths.length) {
-          var newString = files.join('\n')
+          var newString = files.join('\n');
           fs.writeFile(writePath, newString);
         }
       });
