@@ -17,6 +17,7 @@
     "bluebird": "^3.3.4",
     "chai": "^3.2.0",
     "colors": "^1.1.2",
+    "dotenv": "^4.0.0",
     "eslint-config-hackreactor": "git://github.com/hackreactor-labs/eslint-config-hackreactor",
     "mocha": "^2.2.5",
     "nock": "^2.15.0",
