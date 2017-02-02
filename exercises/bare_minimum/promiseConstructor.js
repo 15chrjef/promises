@@ -10,7 +10,7 @@ var Promise = require('bluebird');
 var http = require('http');
 
 // This function should retrieve the first line of the file at `filePath`
-var pluckFirstLineFromFileAsync = function(filePath) { d
+var pluckFirstLineFromFileAsync = function(filePath) {
   return new Promise((resolve, reject) => {
     fs.readFile(filePath, 'utf-8', function(err, data) {
       if (err) {
